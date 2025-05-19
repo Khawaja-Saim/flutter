@@ -33,10 +33,12 @@ import 'scaffold.dart' show Scaffold, ScaffoldMessenger;
 /// Does nothing if asserts are disabled. Always returns true.
 bool debugCheckHasMaterial(BuildContext context) {
   assert(() {
-    if (LookupBoundary.findAncestorWidgetOfExactType<Material>(context) == null) {
-      final bool hiddenByBoundary = LookupBoundary.debugIsHidingAncestorWidgetOfExactType<Material>(
-        context,
-      );
+    if (LookupBoundary.findAncestorWidgetOfExactType<Material>(context) ==
+        null) {
+      final bool hiddenByBoundary =
+          LookupBoundary.debugIsHidingAncestorWidgetOfExactType<Material>(
+            context,
+          );
       throw FlutterError.fromParts(<DiagnosticsNode>[
         ErrorSummary(
           'No Material widget found${hiddenByBoundary ? ' within the closest LookupBoundary' : ''}.',
@@ -93,7 +95,11 @@ bool debugCheckHasMaterial(BuildContext context) {
 /// Does nothing if asserts are disabled. Always returns true.
 bool debugCheckHasMaterialLocalizations(BuildContext context) {
   assert(() {
-    if (Localizations.of<MaterialLocalizations>(context, MaterialLocalizations) == null) {
+    if (Localizations.of<MaterialLocalizations>(
+          context,
+          MaterialLocalizations,
+        ) ==
+        null) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
         ErrorSummary('No MaterialLocalizations found.'),
         ErrorDescription(
@@ -110,7 +116,9 @@ bool debugCheckHasMaterialLocalizations(BuildContext context) {
           'automatically, or add a Localization widget with a '
           'MaterialLocalizations delegate.',
         ),
-        ...context.describeMissingAncestor(expectedAncestorType: MaterialLocalizations),
+        ...context.describeMissingAncestor(
+          expectedAncestorType: MaterialLocalizations,
+        ),
       ]);
     }
     return true;
@@ -139,7 +147,8 @@ bool debugCheckHasMaterialLocalizations(BuildContext context) {
 /// Does nothing if asserts are disabled. Always returns true.
 bool debugCheckHasScaffold(BuildContext context) {
   assert(() {
-    if (context.widget is! Scaffold && context.findAncestorWidgetOfExactType<Scaffold>() == null) {
+    if (context.widget is! Scaffold &&
+        context.findAncestorWidgetOfExactType<Scaffold>() == null) {
       throw FlutterError.fromParts(<DiagnosticsNode>[
         ErrorSummary('No Scaffold widget found.'),
         ErrorDescription(
@@ -184,7 +193,9 @@ bool debugCheckHasScaffoldMessenger(BuildContext context) {
         ErrorDescription(
           '${context.widget.runtimeType} widgets require a ScaffoldMessenger widget ancestor.',
         ),
-        ...context.describeMissingAncestor(expectedAncestorType: ScaffoldMessenger),
+        ...context.describeMissingAncestor(
+          expectedAncestorType: ScaffoldMessenger,
+        ),
         ErrorHint(
           'Typically, the ScaffoldMessenger widget is introduced by the MaterialApp '
           'at the top of your application widget tree.',

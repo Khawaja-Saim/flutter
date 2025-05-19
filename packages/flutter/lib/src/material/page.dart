@@ -32,7 +32,8 @@ import 'theme.dart';
 ///  * [MaterialRouteTransitionMixin], which provides the material transition
 ///    for this route.
 ///  * [MaterialPage], which is a [Page] of this class.
-class MaterialPageRoute<T> extends PageRoute<T> with MaterialRouteTransitionMixin<T> {
+class MaterialPageRoute<T> extends PageRoute<T>
+    with MaterialRouteTransitionMixin<T> {
   /// Construct a MaterialPageRoute whose contents are defined by [builder].
   MaterialPageRoute({
     required this.builder,
@@ -92,12 +93,15 @@ mixin MaterialRouteTransitionMixin<T> on PageRoute<T> {
 
   @override
   Duration get reverseTransitionDuration =>
-      _getPageTransitionBuilder(navigator!.context)?.reverseTransitionDuration ??
+      _getPageTransitionBuilder(
+        navigator!.context,
+      )?.reverseTransitionDuration ??
       const Duration(microseconds: 300);
 
   PageTransitionsBuilder? _getPageTransitionBuilder(BuildContext context) {
     final TargetPlatform platform = Theme.of(context).platform;
-    final PageTransitionsTheme pageTransitionsTheme = Theme.of(context).pageTransitionsTheme;
+    final PageTransitionsTheme pageTransitionsTheme =
+        Theme.of(context).pageTransitionsTheme;
     return pageTransitionsTheme.builders[platform];
   }
 
@@ -141,11 +145,16 @@ mixin MaterialRouteTransitionMixin<T> on PageRoute<T> {
   ) {
     final PageTransitionsTheme theme = Theme.of(context).pageTransitionsTheme;
     final TargetPlatform platform = Theme.of(context).platform;
-    final DelegatedTransitionBuilder? themeDelegatedTransition = theme.delegatedTransition(
-      platform,
-    );
+    final DelegatedTransitionBuilder? themeDelegatedTransition = theme
+        .delegatedTransition(platform);
     return themeDelegatedTransition != null
-        ? themeDelegatedTransition(context, animation, secondaryAnimation, allowSnapshotting, child)
+        ? themeDelegatedTransition(
+          context,
+          animation,
+          secondaryAnimation,
+          allowSnapshotting,
+          child,
+        )
         : null;
   }
 
@@ -166,7 +175,8 @@ mixin MaterialRouteTransitionMixin<T> on PageRoute<T> {
     // Otherwise if the next route has the same route transition mixin as this
     // one, then this route will already be synced with its transition.
     return nextRouteIsNotFullscreen &&
-        ((nextRoute is MaterialRouteTransitionMixin) || nextRouteHasDelegatedTransition);
+        ((nextRoute is MaterialRouteTransitionMixin) ||
+            nextRouteHasDelegatedTransition);
   }
 
   @override
@@ -182,7 +192,11 @@ mixin MaterialRouteTransitionMixin<T> on PageRoute<T> {
     Animation<double> secondaryAnimation,
   ) {
     final Widget result = buildContent(context);
-    return Semantics(scopesRoute: true, explicitChildNodes: true, child: result);
+    return Semantics(
+      scopesRoute: true,
+      explicitChildNodes: true,
+      child: result,
+    );
   }
 
   @override
@@ -193,7 +207,13 @@ mixin MaterialRouteTransitionMixin<T> on PageRoute<T> {
     Widget child,
   ) {
     final PageTransitionsTheme theme = Theme.of(context).pageTransitionsTheme;
-    return theme.buildTransitions<T>(this, context, animation, secondaryAnimation, child);
+    return theme.buildTransitions<T>(
+      this,
+      context,
+      animation,
+      secondaryAnimation,
+      child,
+    );
   }
 }
 
@@ -246,7 +266,10 @@ class MaterialPage<T> extends Page<T> {
 
   @override
   Route<T> createRoute(BuildContext context) {
-    return _PageBasedMaterialPageRoute<T>(page: this, allowSnapshotting: allowSnapshotting);
+    return _PageBasedMaterialPageRoute<T>(
+      page: this,
+      allowSnapshotting: allowSnapshotting,
+    );
   }
 }
 
@@ -254,9 +277,12 @@ class MaterialPage<T> extends Page<T> {
 //
 // This route uses the builder from the page to build its content. This ensures
 // the content is up to date after page updates.
-class _PageBasedMaterialPageRoute<T> extends PageRoute<T> with MaterialRouteTransitionMixin<T> {
-  _PageBasedMaterialPageRoute({required MaterialPage<T> page, super.allowSnapshotting})
-    : super(settings: page) {
+class _PageBasedMaterialPageRoute<T> extends PageRoute<T>
+    with MaterialRouteTransitionMixin<T> {
+  _PageBasedMaterialPageRoute({
+    required MaterialPage<T> page,
+    super.allowSnapshotting,
+  }) : super(settings: page) {
     assert(opaque);
   }
 
